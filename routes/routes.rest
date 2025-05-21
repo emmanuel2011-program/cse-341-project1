@@ -5,7 +5,7 @@ Content-Type: application/json
 ###
 
 ### Get single contact by ID
-GET http://localhost:3000/contacts/68273ab49c3ac9efc0a51582
+GET http://localhost:3000/contacts/68273f509c3ac9efc0a51583
 Content-Type: application/json
 
 ###
@@ -15,9 +15,9 @@ POST http://localhost:3000/contacts
 Content-Type: application/json
 
 {
-  "firstName": "Jane",
+  "firstName": "okoye nonsoemmanuel",
   "lastName": "Smith",
-  "email": "jane@example.com",
+  "email": "eliase@example.com",
   "favoriteColor": "purple",
   "birthdate": "1995-04-10"
 }
@@ -40,3 +40,10 @@ Content-Type: application/json
 
 ### Delete a contact
 DELETE http://localhost:3000/contacts/68273ab49c3ac9efc0a51582
+  
+  {"firstName": "Okoye",
+  "lastName": "Emmanuel",
+  "email": "amazingwoman@test.com",
+  "favoriteColor": "Green",
+  "birthday": "12/12/20"
+  }
