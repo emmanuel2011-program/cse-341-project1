@@ -2,17 +2,16 @@ const mongodb = require('../data/database.js');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res, next) => {
-  const result = await mongodb.getdb().db().collection('contacts').find();
-  result.toArray().then((lists) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(lists);
-  });
+  const result = await mongodb.getdb().collection('contacts').find();
+  const lists = await result.toArray();
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json(lists);
 };
 
 const getSingle = async (req, res, next) => {
   try {
     const userId = new ObjectId(req.params.id);
-    const result = await mongodb.getdb().db().collection('contacts').find({ _id: userId });
+    const result = await mongodb.getdb().collection('contacts').find({ _id: userId });
     const lists = await result.toArray();
 
     if (!lists.length) {
@@ -28,7 +27,6 @@ const getSingle = async (req, res, next) => {
 };
 
 const createContacts = async (req, res) => {
-  // swagger-tags=['contacts']
   const user = {
     firstname: req.body.firstName,
     lastname: req.body.lastName,
@@ -36,7 +34,7 @@ const createContacts = async (req, res) => {
     favoriteColor: req.body.favoriteColor,
     birthdate: req.body.birthdate
   };
-  const response = await mongodb.getdb().db().collection('contacts').insertOne(user);
+  const response = await mongodb.getdb().collection('contacts').insertOne(user);
   if (response.acknowledged) {
     res.status(201).json({ message: 'User created successfully' });
   } else {
@@ -45,7 +43,6 @@ const createContacts = async (req, res) => {
 };
 
 const updateContacts = async (req, res) => {
-  // swagger-tags=['contacts']
   const userId = new ObjectId(req.params.id);
   const user = {
     firstname: req.body.firstName,
@@ -54,7 +51,7 @@ const updateContacts = async (req, res) => {
     favoriteColor: req.body.favoriteColor,
     birthdate: req.body.birthdate
   };
-  const response = await mongodb.getdb().db().collection('contacts').replaceOne({ _id: userId }, user);
+  const response = await mongodb.getdb().collection('contacts').replaceOne({ _id: userId }, user);
   if (response.modifiedCount > 0) {
     res.status(204).send();
   } else {
@@ -63,9 +60,8 @@ const updateContacts = async (req, res) => {
 };
 
 const deleteContacts = async (req, res) => {
-  // swagger-tags=['contacts']
   const userId = new ObjectId(req.params.id);
-  const response = await mongodb.getdb().db().collection('contacts').deleteOne({ _id: userId });
+  const response = await mongodb.getdb().collection('contacts').deleteOne({ _id: userId });
   if (response.deletedCount > 0) {
     res.status(204).send();
   } else {
