@@ -11,12 +11,8 @@ const getAll = async (req, res, next) => {
 
 const getSingle = async (req, res, next) => {
   try {
-    const userId = new ObjectId(req.params.id); // this will throw if ID is invalid
-    const result = await mongodb
-      .getdb()
-      .db()
-      .collection('contacts')
-      .find({ _id: userId });
+    const userId = new ObjectId(req.params.id);
+    const result = await mongodb.getdb().db().collection('contacts').find({ _id: userId });
     const lists = await result.toArray();
 
     if (!lists.length) {
@@ -31,5 +27,50 @@ const getSingle = async (req, res, next) => {
   }
 };
 
+const createContacts = async (req, res) => {
+  // swagger-tags=['contacts']
+  const user = {
+    firstname: req.body.firstName,
+    lastname: req.body.lastName,
+    email: req.body.email,
+    favoriteColor: req.body.favoriteColor,
+    birthdate: req.body.birthdate
+  };
+  const response = await mongodb.getdb().db().collection('contacts').insertOne(user);
+  if (response.acknowledged) {
+    res.status(201).json({ message: 'User created successfully' });
+  } else {
+    res.status(500).json(response.error || 'Some error occurred while creating the user.');
+  }
+};
 
-module.exports = { getAll, getSingle };
+const updateContacts = async (req, res) => {
+  // swagger-tags=['contacts']
+  const userId = new ObjectId(req.params.id);
+  const user = {
+    firstname: req.body.firstName,
+    lastname: req.body.lastName,
+    email: req.body.email,
+    favoriteColor: req.body.favoriteColor,
+    birthdate: req.body.birthdate
+  };
+  const response = await mongodb.getdb().db().collection('contacts').replaceOne({ _id: userId }, user);
+  if (response.modifiedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error || 'Some error occurred while updating the user.');
+  }
+};
+
+const deleteContacts = async (req, res) => {
+  // swagger-tags=['contacts']
+  const userId = new ObjectId(req.params.id);
+  const response = await mongodb.getdb().db().collection('contacts').deleteOne({ _id: userId });
+  if (response.deletedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error || 'Some error occurred while deleting the user.');
+  }
+};
+
+module.exports = { getAll, getSingle, createContacts, updateContacts, deleteContacts };
