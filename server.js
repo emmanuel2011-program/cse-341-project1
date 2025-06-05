@@ -1,26 +1,37 @@
+require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
+const db = require('./models');
 
 const port = process.env.PORT || 3000;
 const app = express();
 
-app
-  .use(express.json())
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-  })
-  .use('/', require('./routes'))  // <-- moved this up into chain
-  .get('/', (req, res) => {
-    res.send('Welcome to the API!');
-  });
+// Middleware
+app.use(express.json());
 
-const db = require('./models');
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
 
-db.mongoose
-  .connect(db.url)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'default_secret',
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Routes
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
+});
+
+app.use('/', require('./routes'));
+
+// DB Connection and Server Start
+db.mongoose.connect(db.url)
   .then(() => {
     app.listen(port, () => {
-      console.log(`DB Connected and server running on ${port}.`);
+      console.log(`DB Connected and server running on port ${port}`);
     });
   })
   .catch((err) => {
