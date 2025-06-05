@@ -31,7 +31,7 @@ app.use('/', require('./routes'));
 db.mongoose.connect(db.url)
   .then(() => {
     app.listen(port, () => {
-      console.log(`DB Connected and server running on port ${port}`);
+      console.log(`Server running on port ${port}`);
     });
   })
   .catch((err) => {
