@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swaggerDesign.json');
 
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+router.use('/', require('./swagger'));
+router.use('/user', require('./user'));
+router.use('/theme', require('./theme'));
 
 module.exports = router;

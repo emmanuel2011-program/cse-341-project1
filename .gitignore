@@ -104,4 +104,28 @@ dist
 .dynamodb/
 
 # TernJS port file
-.tern-port
+.tern-port "username": "johndoe",
+    "password": "hashedpassword123",
+    "displayName": "John Doe",
+    "email": "john.doe@example.com",
+    "phoneNumber": "+15551234567",
+    "currentLocation": "San Francisco, CA",
+    "openToNewOpportunities": true,
+    "profileIsPublic": true,
+    "theme_name": "dark-mode",
+    "info": {
+      "email": "john.doe@example.com",
+      "phoneNumber": "+15551234567",
+      "currentLocation": "San Francisco, CA",
+      "openToNewOpportunities": true,
+      "profileIsPublic": true,
+      "theme_name": "dark-mode"
+    },
+    "profile": {
+      "experience": [],
+      "education": [],
+      "projects": [],
+      "skills": [],
+      "references": []
+    }
+  }
